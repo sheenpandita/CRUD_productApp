@@ -1,0 +1,55 @@
+
+{% extends 'application/base.html' %}
+{% block content %}
+   <div class="row"> 
+       <div class="col-sm-4">
+            <h4 class="text-center alert alert-info">ADD A NEW PRODUCT</h4>
+            <form  method="POST" enctype="multipart/form-data" >
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type='submit' class='btn btn-success' value="Add"></input>
+            </form>
+            </div>
+
+            <div class="col-sm-8 ">
+                <h4 class='text-center alert alert-info'>Show Product Information</h4>
+                {% if dis  %}
+                <h4>Table Data</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Item NAME</th>
+                            <th scope="col">PRICE</th>
+                            <th scope="col">DESCRIPTION</th>
+                            <th scope="col">IMAGE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for sh in dis %}
+                        <tr>
+                        <th scope="row">{{sh.id}}</th>
+                        <td>{{sh.item_name}}</td>
+                        <td>{{sh.price}}</td>
+                        <td>{{sh.desc}}</td>
+                        <td>{{sh.img}}</td>
+                        <td>
+                            <form action="{% url 'updatedata' sh.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-warning" value="Edit">
+                            </form>
+                            <form action="{% url 'deletedata' sh.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <input type="submit" class="btn btn-danger" value="Delete">
+                            </form>
+                        </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                {% else %}
+                <h4 class="text-center alert alert-warning">No Records</h4>
+                {% endif %}
+            </div>
+        </div>
+{% endblock content %}
